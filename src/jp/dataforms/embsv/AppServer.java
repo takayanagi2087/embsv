@@ -110,19 +110,6 @@ public class AppServer {
 	 */
 	private Tomcat tomcat = null; 
 	
-	/**
-	 * AppServerが含まれているjarファイルを展開します。
-	 * @throws Exception 例外。
-	 */
-	private static void extactMyself() throws Exception {
-		String jarname = JarUtil.getJarPath(AppServer.class);
-		logger.debug("jarname=" + jarname);
-		File jarFile = new File(jarname);
-		String dstdir = jarFile.getParent() + File.separator + "jar"; 
-		File dstfile = new File(dstdir);
-		JarUtil.extractJar(jarFile, dstfile);
-	}
-	
 	
 	/**
 	 * 設定ファイルを展開します。
@@ -191,10 +178,11 @@ public class AppServer {
 	/**
 	 * warファイルを転嫁します。
 	 * @param warfile warファイルのパス。
+	 * @param overwrite 上書きフラグ。
 	 * @return 展開されたパス。
 	 * @throws Exception 例外。
 	 */
-	private String extractWar(final String warfile) throws Exception {
+	private String extractWar(final String warfile, final boolean overwrite) throws Exception {
 		File wf = new File(warfile);
 		String jarpath = JarUtil.getJarPath(AppServer.class);
 		String expath = (new File(jarpath)).getParent() + File.separator 
@@ -202,12 +190,21 @@ public class AppServer {
 		expath = expath.replaceAll("\\.war$", "");
 		File exfile = new File(expath);
 		logger.debug("extract:" + warfile + " => " + expath);
-		if (exfile.exists() == false || exfile.lastModified() < wf.lastModified()) {
+		if (overwrite || exfile.exists() == false || exfile.lastModified() < wf.lastModified()) {
 			JarUtil.extractJar(wf, new File(expath));
 		}
 		return expath;
 	}
 	
+	/**
+	 * warファイルを転嫁します。
+	 * @param warfile warファイルのパス。
+	 * @return 展開されたパス。
+	 * @throws Exception 例外。
+	 */
+	private String extractWar(final String warfile) throws Exception {
+		return this.extractWar(warfile, false);
+	}
 	
 	/**
 	 * Webアプリケーションを開始します。
@@ -369,6 +366,30 @@ public class AppServer {
 		}
 	}
 
+	/**
+	 * AppServerが含まれているjarファイルを展開します。
+	 * @throws Exception 例外。
+	 */
+	private void extactMyself(final String expath) throws Exception {
+		String jarname = JarUtil.getJarPath(AppServer.class);
+		logger.debug("jarname=" + jarname);
+		File jarFile = new File(jarname);
+		File dstfile = new File(expath);
+		JarUtil.extractJar(jarFile, dstfile, false);
+	}
+	
+
+	/**
+	 * warファイルにサーバ機能を追加する。
+	 * @throws Exception 例外。
+	 */
+	private void embedTomcat() throws Exception {
+		logger.debug("inputWar=" + AppServer.inputWar);
+		logger.debug("outputWar=" + AppServer.outputWar);
+		String expath = this.extractWar(AppServer.inputWar, true);
+		logger.debug("expath=" + expath);
+		this.extactMyself(expath);
+	}
 	
 	/**
 	 * Helpメッセージを表示します。
@@ -401,6 +422,8 @@ public class AppServer {
 		logger.debug("json=\n" + gson.toJson(AppServer.conf));
 
 	}
+
+	
 	
 	/**
 	 * メイン処理。
@@ -417,7 +440,8 @@ public class AppServer {
 				AppServer server = new AppServer();
 				server.shutdown();
 			} else if (mode == Mode.EMB) {
-				
+				AppServer server = new AppServer();
+				server.embedTomcat();
 			} else if (mode == Mode.HELP) {
 				AppServer.help();
 			}

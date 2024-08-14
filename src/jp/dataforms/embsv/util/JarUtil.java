@@ -42,47 +42,39 @@ public class JarUtil {
 		return ret;
 
 	}
-	
+
 	/**
-	 * 入力ストリームを出力ストリームにコピーします。
-	 * <pre>
-	 * 出力ストリーム、入力ストリームともにクローズされません。
-	 * </pre>
-	 * @param is 入力ストリーム。
-	 * @param os 出力ストリーム。
-	 * @throws IOException IO例外。
+	 * jarファイルを展開します。
+	 * @param jarfile jarファイル。
+	 * @param dstfile 展開先。
+	 * @param clean 既に存在するファイルを削除する。
 	 */
-/*	public static void copyStream(final InputStream is, final OutputStream os) throws IOException {
-		byte[] buf = new byte[16 * 1024];
-		while (true) {
-			int len = is.read(buf);
-			if (len <= 0) {
-				break;
-			}
-			os.write(buf, 0, len);
-		}
+	public static void extractJar(final File jarfile, final File dstfile) throws Exception {
+		JarUtil.extractJar(jarfile, dstfile, true);
 	}
-*/
 	
 	/**
 	 * jarファイルを展開します。
 	 * @param jarfile jarファイル。
 	 * @param dstfile 展開先。
+	 * @param clean 既に存在するファイルを削除する。
 	 */
-	public static void extractJar(final File jarfile, final File dstfile) throws Exception {
+	public static void extractJar(final File jarfile, final File dstfile, final boolean clean) throws Exception {
 		logger.info(jarfile.getAbsolutePath() + " => " + dstfile);
 		if (!dstfile.exists()) {
 			// 無い場合は作成。
 			dstfile.mkdirs();
 		} else {
-			// 既にあった場合は仲をクリア。
-			FileUtils.cleanDirectory(dstfile);
+			if (clean) {
+				// 既にあった場合は中をクリア。
+				FileUtils.cleanDirectory(dstfile);
+			}
 		}
 		try (JarFile jar = new JarFile(jarfile)) {
 			Enumeration<?> files = jar.entries();
 			while (files.hasMoreElements()) {
 			    ZipEntry entry = (ZipEntry) files.nextElement();
-			    logger.info("entry:" + entry.getName());
+//			    logger.info("entry:" + entry.getName());
 			    String ap = dstfile.getAbsolutePath() + File.separator + entry.getName();
 			    File f = new File(ap);
 			    if (entry.isDirectory()) {
@@ -98,6 +90,11 @@ public class JarUtil {
 				    }
 			    }
 			}
+		}
+	}
+	
+	public static void createJar(final File path, final File jarfile) throws Exception {
+		try (JarFile jar = new JarFile(jarfile)) {
 		}
 	}
 }
