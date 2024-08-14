@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<Configuration status="off">
+	<Properties>
+		<Property name="format1">%d{yyyy/MM/dd HH:mm:ss.SSS} [%t] %-6p %c{10} %m%n</Property>
+		<Property name="logfile">log/embsv.log</Property>
+		<Property name="logfile-archive">log/embsv_%d{yyyy-MM-dd}-%i.log</Property>
+	</Properties>
+
+	<Appenders>
+		<!-- コンソールに出力する設定 -->
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout>
+				<pattern>${format1}</pattern>
+			</PatternLayout>
+		</Console>
+		<!-- ファイルに出力する設定 -->
+		<RollingFile name="Logfile001" append="true" fileName="${logfile}" filePattern="${logfile-archive}">
+			<PatternLayout>
+				<pattern>${format1}</pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="1MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="3"/>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="Logfile001" />
+		</Root>
+	</Loggers>
+</Configuration>

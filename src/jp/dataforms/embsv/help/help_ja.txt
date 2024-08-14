@@ -1,0 +1,12 @@
+使い方:
+1) 指定されたWebアプリケーションを実行します。
+java -jar embsv.jar -start <warファイル|Webアプリケーションパス>
+
+2) Webアプリケーションを停止します。
+java -jar embsv.jar -stop
+
+3) warファイルにWebアプリケーションサーバ機能を追加します。
+java -jar envsv.jar -emb <入力warファイル> <出力warファイル>
+
+以下のコマンドでWebアプリケーションを実行することができます。
+java -jar <出力warファイル>

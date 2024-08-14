@@ -1,0 +1,12 @@
+Usage:
+1) Runs the specified web application.
+java -jar embsv.jar -start <war file | Web application path>
+
+2) Stop the web application.
+java -jar embsv.jar -stop
+
+3) Add web application server functionality to the war file.
+java -jar envsv.jar -emb <input war file> <output war file>
+
+You can run the web application with the following command.
+java -jar <output war file>

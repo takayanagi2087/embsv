@@ -1,0 +1,275 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>jp.dataforms</groupId>
+	<artifactId>embsv</artifactId>
+	<version>1.0.1-SNAPSHOT</version>
+	<properties>
+		<tomcat.version>10.1.28</tomcat.version>
+		<derby.version>10.17.1.0</derby.version>
+		<log4j.version>2.23.1</log4j.version>
+	</properties>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.32</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper -->
+		<!-- 
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		-->
+		<!--
+		https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-el -->
+		<!-- 
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-el</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		-->
+		<!--
+		https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-websocket -->
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-websocket</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-dbcp -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-dbcp</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>${tomcat.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.angus/jakarta.mail -->
+		<dependency>
+			<groupId>org.eclipse.angus</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>${derby.version}</version>
+			<!-- 
+			<scope>test</scope>
+			-->
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyshared -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyshared</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbytools -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbytools</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyoptionaltools -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyoptionaltools</artifactId>
+			<version>${derby.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_ja_JP -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_ja_JP</artifactId>
+			<version>${derby.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_zh_TW -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_zh_TW</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_fr -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_fr</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_zh_CN -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_zh_CN</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_cs -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_cs</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_es -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_es</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_it -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_it</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_pl -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_pl</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_ko_KR -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_ko_KR</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_pt_BR -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_pt_BR</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_de_DE -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_de_DE</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_ru -->
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyLocale_ru</artifactId>
+			<version>${derby.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10.1</version>
+		</dependency>
+		<!-- LOG出力ライブラリ -->
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+		<!-- 
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		-->
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.16.1</version>
+		</dependency>
+
+	</dependencies>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+		
+			<!-- for resources copy -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<!-- javaのソースと各種リソースをjarに含める -->
+					<execution>
+						<id>copy-sources</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+							<outputDirectory>target/classes/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<release>21</release>
+				</configuration>
+			</plugin>
+			
+			<!-- embsv.jarの作成 -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<finalName>embsv</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifestEntries>
+							<Main-Class>jp.dataforms.embsv.AppServer</Main-Class>
+						</manifestEntries>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+</project>
