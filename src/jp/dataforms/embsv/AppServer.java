@@ -389,6 +389,7 @@ public class AppServer {
 		String expath = this.extractWar(AppServer.inputWar, true);
 		logger.debug("expath=" + expath);
 		this.extactMyself(expath);
+		FileUtil.createZipFile(AppServer.outputWar, expath);
 	}
 	
 	/**

@@ -6,7 +6,7 @@ java -jar embsv.jar -start <war file | Web application path>
 java -jar embsv.jar -stop
 
 3) Add web application server functionality to the war file.
-java -jar envsv.jar -emb <input war file> <output war file>
+java -jar embsv.jar -emb <input war file> <output war file>
 
 You can run the web application with the following command.
 java -jar <output war file>
