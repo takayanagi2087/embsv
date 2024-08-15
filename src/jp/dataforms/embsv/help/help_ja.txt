@@ -8,24 +8,24 @@ java -jar embsv.jar -emb <入力warファイル> <出力warファイル>
 java -jar <出力warファイル> [option]
 
 起動モード
--mode cmdline 			Webサーバのみを起動します。GUIを使用しないモードです。
--mode tasktray			タスクトレイからWebサーバを制御したり、ブラウザを起動することができます。
--mode window			WindowからWebサーバを制御したり、ブラウザを起動することができます。
+-mode cmdline           Webサーバのみを起動します。GUIを使用しないモードです。
+-mode tasktray          タスクトレイからWebサーバを制御したり、ブラウザを起動することができます。
+-mode window            WindowからWebサーバを制御したり、ブラウザを起動することができます。
 
 HTTPのサービスポート
--port <port>			HTTPのサービスポートを指定します。(デフォルト値:8080)
+-port <port>            HTTPのサービスポートを指定します。(デフォルト値:8080)
 
 停止コマンドポート
--shutdownPort <port>	停止コマンドのサービスポートを指定します。(デフォルト値:8005)
+-shutdownPort <port>    停止コマンドのサービスポートを指定します。(デフォルト値:8005)
 
 ブラウザ起動
--browser				Webサーバの起動時にブラウザも起動し、Webアプリケーションをアクセスします。
+-browser                Webサーバの起動時にブラウザも起動し、Webアプリケーションをアクセスします。
 
 サーバの停止
--stop					Webサーバを停止します。
+-stop                   Webサーバを停止します。
 
-ヘルプファイル
--help					この情報を表示します。
+ヘルプ
+-help                   この情報を表示します。
 
 【Webアプリケーションの実行と停止】
 以下のコマンドでWebアプリケーションを実行することができます。

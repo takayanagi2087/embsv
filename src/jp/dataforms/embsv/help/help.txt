@@ -1,13 +1,38 @@
 embsv.jar ${version}
 Usage:
-1) Runs the specified web application.
-java -jar embsv.jar -start <war file | Web application path>
-
-2) Stop the web application.
-java -jar embsv.jar -stop
-
-3) Add web application server functionality to the war file.
+[Creating an executable war file]
+Create an executable war file with the following command:
 java -jar embsv.jar -emb <input war file> <output war file>
 
-You can run the web application with the following command.
-java -jar <output war file>
+The <output war file> processed by this command will start the web server with just the following command.
+
+java -jar <output war file> [option]
+
+Startup Mode
+-mode cmdline          This mode starts only the Web server and does not use the GUI.
+-mode tasktray         You can control the web server and launch the browser from the task tray.
+-mode window           You can control the web server and launch the browser from Windows.
+
+HTTP service port
+-port <port>           Specifies the HTTP service port. (Default value: 8080)
+
+Stop Command Port
+-shutdownPort <port>   Specifies the service port for the stop command. (Default value: 8005)
+
+Launch browser
+-browser               When the web server starts, the browser also starts and the web application is accessed.
+
+Stopping the Server
+-stop                  Stop the Web server.
+
+Help
+-help                  Display this information.
+
+
+[Running and stopping web applications]
+You can run the web application with the following command:
+java -jar embsv.jar -start <war file | Web application path>
+
+You can stop a Web application with the following command:
+java -jar embsv.jar -stop
+
