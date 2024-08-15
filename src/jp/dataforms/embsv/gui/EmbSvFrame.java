@@ -8,7 +8,6 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
-import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -309,11 +308,12 @@ public class EmbSvFrame extends JFrame {
 		try (InputStream is = this.getClass().getResourceAsStream("res/version.txt")) {
 			byte[] b = FileUtil.readInputStream(is);
 			String vinf = new String(b);
-			if (Conf.MODE_TASKTRAY.equals(AppServer.getConf().getMode())) {
+			JOptionPane.showMessageDialog(null, vinf);
+/*			if (Conf.MODE_TASKTRAY.equals(AppServer.getConf().getMode())) {
 				this.icon.displayMessage(EmbSvFrame.resource.getString("menuitem.about"), vinf, MessageType.INFO);
 			} else {
 				JOptionPane.showMessageDialog(null, vinf);
-			}
+			}*/
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}

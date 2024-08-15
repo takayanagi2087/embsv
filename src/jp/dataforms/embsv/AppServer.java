@@ -89,11 +89,14 @@ public class AppServer {
 		 * Shutdownポート。
 		 */
 		private int shutdownPort = 8005;
-		
+		/**
+		 * ブラウザ起動フラグ。
+		 */
+		private boolean browser = false;
 		/**
 		 * ブラウザのコマンドライン。
 		 */
-		private List<String> browser = new ArrayList<String>();
+		private List<String> browserCommandLine = new ArrayList<String>();
 	}
 	
 	/**
@@ -181,6 +184,30 @@ public class AppServer {
 			}
 			if (mode == null && "-help".equals(args[i])) {
 				mode = Mode.HELP;
+			}
+			if ("-browser".equals(args[i])) {
+				AppServer.conf.browser = true;
+			}
+			if ("-mode".equals(args[i])) {
+				if (i + 1 < args.length) {
+					String m = args[i + 1];
+					if (Conf.MODE_CMDLINE.equals(m) || Conf.MODE_TASKTRAY.equals(m) || Conf.MODE_WINDOW.equals(m)) {
+						AppServer.conf.mode = args[i + 1];
+					}
+					i++;
+				}
+			}
+			if ("-port".equals(args[i])) {
+				if (i + 1 < args.length) {
+					AppServer.conf.port = Integer.parseInt(args[i + 1]);
+					i++;
+				}
+			}
+			if ("-shutdownPort".equals(args[i])) {
+				if (i + 1 < args.length) {
+					AppServer.conf.shutdownPort = Integer.parseInt(args[i + 1]);
+					i++;
+				}
 			}
 		}
 		if (mode == null) {
@@ -364,7 +391,7 @@ public class AppServer {
 	 */
 	public void runBrowser(File f) throws IOException, URISyntaxException {
 		int port = AppServer.conf.getPort();
-		List<String> browser = (List<String>) AppServer.conf.getBrowser();
+		List<String> browser = (List<String>) AppServer.conf.getBrowserCommandLine();
 		String context = "/" + f.getName();
 		if (browser.size() == 0) {
 			Desktop.getDesktop().browse(new URI("http://localhost:" + port + context));
@@ -406,7 +433,9 @@ public class AppServer {
 				EmbSvFrame.showGui(this, this.webAppList);
 			}
 		}
-		this.runBrowser(applist);
+		if (AppServer.conf.isBrowser()) {
+			this.runBrowser(applist);
+		}
 		if (started) {
 			// サーバが起動していた場合は何もしないで終了する。
 			System.exit(0);

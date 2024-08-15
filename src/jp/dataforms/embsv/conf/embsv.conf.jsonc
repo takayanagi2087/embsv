@@ -3,15 +3,17 @@
 	//   cmdline:GUIを使用しません。
 	//   tasktray:タスクトレイモード。
 	//   window:ウインドウモード(タスクトレイが使用できない場合使用します。)
-	"mode": "window"
-	// Tomcatのサービスポートを設定します。
+	"mode": "cmdline"
+	// HTTPのサービスポートを設定します。
 	, "port": 8080
 	// 停止コマンド用ポートを設定します。
 	, "shutdownPort":8005
+	// Webアプリケーション起動時にブラウザも起動します。
+	, "browser": false
 	// 起動ブラウザを固定したい場合は以下の設定を参考にしてください。
 	// この設定を有効にすると、Chromeがフルスクリーンモードで起動します。
 	// また、デフォルトブラウザが起動しない場合は、このオプションにブラウザのパスを指定してください。
-	//, "browser": [
+	//, "browserCommandLine": [
 	//	"C:/Program Files/Google/Chrome/Application/chrome.exe",
 	//	"--start-fullscreen"
 	//]
