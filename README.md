@@ -3,8 +3,8 @@
 
 embsv.jarはまだ開発中です。
 
-dataforms3.jarで作成したwarファイルを実行するには、Webサーバを用意し、
-Apache Tomcat10と何らかのデータベースサーバを用意する必要があります。
+dataforms3.jarで作成したwarファイルを実行するには、Apache Tomcat10以上と
+何らかのデータベースサーバを用意する必要があります。
 この作業は専門知識が必要になるため、有用なwarファイルを公開しても
 専門家でないと利用することができません。
 そこでTomcat10 EmbeddedとJavaで作成されたデータベースであるApache Derbyを組み合わせた
