@@ -216,7 +216,7 @@ public class EmbSvFrame extends JFrame {
 		exitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//RunWar.this.stop();
+				EmbSvFrame.this.appServer.stop();
 				System.exit(0);
 			}
 		});
@@ -226,7 +226,7 @@ public class EmbSvFrame extends JFrame {
 		aboutItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//EmbSvFrame.this.about();
+				EmbSvFrame.this.about();
 			}
 		});
 		helpMenu.add(aboutItem);
@@ -275,7 +275,7 @@ public class EmbSvFrame extends JFrame {
 		exitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// EmbSvFrame.this.stop();
+				EmbSvFrame.this.appServer.stop();
 				System.exit(0);
 			}
 		});

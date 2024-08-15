@@ -125,7 +125,6 @@ public class AppServer {
 	/**
 	 * アプリケーションパスのリスト。
 	 */
-	@Getter
 	private List<File> webAppList = null;
 	
 	/**
