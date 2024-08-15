@@ -8,11 +8,18 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.InputStream;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,16 +27,36 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class EmbSvFrame extends JFrame {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import jp.dataforms.embsv.AppServer;
+import jp.dataforms.embsv.AppServer.Conf;
+import jp.dataforms.embsv.util.FileUtil;
+
+/**
+ * GUIフレーム。
+ */
+public class EmbSvFrame extends JFrame {
+	/**
+	 * Logger.
+	 */
+	private static Logger logger = LogManager.getLogger(EmbSvFrame.class); 
+	
+	/**
+	 * システム名称。
+	 */
 	private static final String SYSTEM_NAME = "Embedded Server";
 
-
+	/**
+	 * UID.
+	 */
 	private static final long serialVersionUID = 1L;
 
 
@@ -38,7 +65,6 @@ public class EmbSvFrame extends JFrame {
 	 */
 	private static ResourceBundle resource = ResourceBundle.getBundle("jp.dataforms.embsv.gui.EmbSvFrame");
 
-	
 	/**
 	 * アイコンイメージ。
 	 */
@@ -49,6 +75,10 @@ public class EmbSvFrame extends JFrame {
 	 */
 	private JList<String> appList = null;
 
+	/**
+	 * Webアプリケーションリスト。
+	 */
+	private List<File> webAppList = null;
 	
 	/**
 	 * タスクトレイアイコン。
@@ -60,6 +90,11 @@ public class EmbSvFrame extends JFrame {
 	 */
 	private JPanel contentPane;
 
+	/**
+	 * アプリケーションサーバのインスタンス。
+	 */
+	private AppServer appServer = null;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -77,6 +112,32 @@ public class EmbSvFrame extends JFrame {
 		});
 	}
 
+	/**
+	 * GUIを表示します。
+	 * @param server 
+	 * @param webAppList Webアプリケーションリスト。
+	 */
+	public static void showGui(final AppServer server, final List<File> webAppList) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					EmbSvFrame frame = new EmbSvFrame();
+					if (Conf.MODE_TASKTRAY.equals(AppServer.getConf().getMode())) {
+						frame.setTaskTrayIcon();
+					} else if (Conf.MODE_WINDOW.equals(AppServer.getConf().getMode())) {
+						frame.setVisible(true);
+						frame.setExtendedState(ICONIFIED);
+					}
+					frame.setWebAppList(webAppList);
+					frame.appServer = server;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	
 	/**
 	 * Create the frame.
 	 */
@@ -108,22 +169,20 @@ public class EmbSvFrame extends JFrame {
 			
 			this.appList = new JList<String>();
 			JScrollPane scrollPane = new JScrollPane(this.appList);
-/*			appList.addMouseListener(new MouseAdapter() {
+			appList.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
 						try {
 							int idx = appList.getSelectedIndex();
-							@SuppressWarnings("unchecked")
-							List<Map<String, Object>> list = (List<Map<String, Object>>) config.get("webapps");
-							Map<String, Object> m = list.get(idx);
-							RunWar.this.runBrowser(m);
+							File f = EmbSvFrame.this.webAppList.get(idx);
+							EmbSvFrame.this.appServer.runBrowser(f);
 						} catch (Exception ex) {
 							ex.printStackTrace();
 						}
 					}
 				}
-			});*/
+			});
 			this.contentPane.add(scrollPane, BorderLayout.CENTER);
 		}
 		// ボタンパネル
@@ -133,13 +192,13 @@ public class EmbSvFrame extends JFrame {
 			JButton closeButton = new JButton(EmbSvFrame.resource.getString("button.close"));
 			closeButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.exit(0);
-	/*				if (MODE_TASKTRAY.equals(RunWar.this.getMode())) {
-						RunWar.this.setVisible(false);
+					Conf conf = AppServer.getConf();
+					if (Conf.MODE_TASKTRAY.equals(conf.getMode())) {
+						EmbSvFrame.this.setVisible(false);
 					} else {
-						RunWar.this.stop();
+						EmbSvFrame.this.appServer.stop();
 						System.exit(0);
-					}*/
+					}
 				}
 			});
 			buttonPanel.add(closeButton);
@@ -207,7 +266,7 @@ public class EmbSvFrame extends JFrame {
 		about.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// EmbSvFrame.this.about();
+				EmbSvFrame.this.about();
 			}
 		});
 
@@ -229,6 +288,34 @@ public class EmbSvFrame extends JFrame {
 		// タスクトレイに格納
 		SystemTray.getSystemTray().add(icon);
 	}
-
-
+	
+	/**
+	 * Webアプリケーションのリストを設定します。
+	 * @param webAppList Webアプリケーションリスト。
+	 */
+	public void setWebAppList(final List<File> webAppList) {
+		this.webAppList = webAppList;
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		for (File f: webAppList) {
+			model.addElement("/" + f.getName());
+		}
+		this.appList.setModel(model);
+	}
+	
+	/**
+	 * バージョン情報。
+	 */
+	private void about() {
+		try (InputStream is = this.getClass().getResourceAsStream("res/version.txt")) {
+			byte[] b = FileUtil.readInputStream(is);
+			String vinf = new String(b);
+			if (Conf.MODE_TASKTRAY.equals(AppServer.getConf().getMode())) {
+				this.icon.displayMessage(EmbSvFrame.resource.getString("menuitem.about"), vinf, MessageType.INFO);
+			} else {
+				JOptionPane.showMessageDialog(null, vinf);
+			}
+		} catch (Exception ex) {
+			logger.error(ex.getMessage(), ex);
+		}
+	}
 }

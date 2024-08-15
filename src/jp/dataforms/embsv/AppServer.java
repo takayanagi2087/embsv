@@ -24,10 +24,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
+import jp.dataforms.embsv.gui.EmbSvFrame;
 import jp.dataforms.embsv.util.ContextXml;
 import jp.dataforms.embsv.util.FileUtil;
 import jp.dataforms.embsv.util.JarUtil;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * 組み込みTomcatアプリケーションサーバー。
@@ -61,11 +63,24 @@ public class AppServer {
 	 * 設定情報。
 	 */
 	@Data
-	private static class Conf {
+	public static class Conf {
+		/**
+		 * GUIの無いコマンドラインモード。
+		 */
+		public static final String MODE_CMDLINE = "cmdline";
+		/**
+		 * タスクトレイモード。
+		 */
+		public static final String MODE_TASKTRAY = "tasktray";
+		/**
+		 * ウインドモード。
+		 */
+		public static final String MODE_WINDOW = "window";
+		
 		/**
 		 * コマンドラインモード。
 		 */
-		private String mode = "cmdline";
+		private String mode = MODE_CMDLINE;
 		/**
 		 * httpポート。
 		 */
@@ -84,6 +99,7 @@ public class AppServer {
 	/**
 	 * 設定情報。
 	 */
+	@Getter
 	private static Conf conf = new Conf();
 	
 	/**
@@ -104,7 +120,13 @@ public class AppServer {
 	/**
 	 * Context Path。
 	 */
-	private String context = null;
+//	private String context = null;
+	
+	/**
+	 * アプリケーションパスのリスト。
+	 */
+	@Getter
+	private List<File> webAppList = null;
 	
 	/**
 	 * Tomcat。
@@ -223,6 +245,23 @@ public class AppServer {
 		xml.setDatabasePath(new File(dbpath));
 		xml.save();
 	}
+	
+	/**
+	 * Webアプリケーションのリストを取得します。
+	 * @return Webあぷりけーし
+	 */
+	private List<File> getWebAppList() {
+		List<File> list = new ArrayList<File>();
+		String jarpath = JarUtil.getJarPath(AppServer.class);
+		File jarfile = new File(jarpath);
+		File webapps = new File(jarfile.getParent() + File.separator + "webapps");
+		File[] applist = webapps.listFiles();
+		for (File app: applist) {
+			list.add(app);			
+		}
+		return list;
+	}
+	
 	/**
 	 * Webアプリケーションを開始します。
 	 * @throws Exception 例外。
@@ -230,13 +269,16 @@ public class AppServer {
 	private void start(final String path) throws Exception {
 		AppServer.writeConfFile();
 		File appfile = new File(path);
+		// 展開されたWebアプリケーションのパスを指定された場合、1件のアプリのみを実行。
+		this.webAppList = new ArrayList<File>();
+		this.webAppList.add(appfile);
 		if (Pattern.matches(".+\\.war$", path)) {
 			String expath = this.extractWar(path);
 			this.setDataSourcePath(expath);
 			appfile = new File(expath);
+			this.webAppList = this.getWebAppList();
 		}
-		this.context = "/" + appfile.getName();
-		this.startPath(this.context, appfile.getAbsolutePath());
+		this.startPath(this.webAppList);
 	}
 
 	/**
@@ -307,14 +349,24 @@ public class AppServer {
 
 	/**
 	 * ブラウザを起動して、指定したアプリケーションを表示します。
-	 * @param m アプリケーションの情報マップ。
-	 * @throws IOException IO例外。
-	 * @throws URISyntaxException 文法例外。
+	 * @param applist アプリケーションリスト。
+	 * @throws Exception 例外。
 	 */
-	private void runBrowser() throws IOException, URISyntaxException {
+	public void runBrowser(final List<File> applist) throws Exception {
+		for (File f: applist) {
+			this.runBrowser(f);
+		}
+	}
+
+	/**
+	 * ブラウザを起動して、指定したアプリケーションを表示します。
+	 * @param f アプリケーションファイル。
+	 * @throws Exception 例外。
+	 */
+	public void runBrowser(File f) throws IOException, URISyntaxException {
 		int port = AppServer.conf.getPort();
 		List<String> browser = (List<String>) AppServer.conf.getBrowser();
-		String context = this.context;
+		String context = "/" + f.getName();
 		if (browser.size() == 0) {
 			Desktop.getDesktop().browse(new URI("http://localhost:" + port + context));
 		} else {
@@ -331,11 +383,10 @@ public class AppServer {
 	
 	/**
 	 * 指定したPathを実行します。
-	 * @param context コンテキストパス。
-	 * @param path Webアプリケーションパス。
+	 * @param applist Webアプリケーションのリスト。
 	 * @throws Exception 例外。
 	 */
-	private void startPath(final String context, final String path) throws Exception {
+	private void startPath(final List<File> applist) throws Exception {
 		// サーバが起動しているかどうかを確認
 		boolean started = this.isStarted();
 		if (!started) {
@@ -344,13 +395,19 @@ public class AppServer {
 			this.tomcat.setPort(AppServer.conf.getPort());
 			this.tomcat.getConnector();
 			this.tomcat.enableNaming();
-			this.tomcat.addWebapp(context, path);
+			for (File f: applist) {
+				String context = "/" + f.getName();
+				this.tomcat.addWebapp(context, f.getAbsolutePath());
+			}
 			this.tomcat.start();
 			// シャットダウンポートの監視スレッド。
 			ShutdownListenThread th = new ShutdownListenThread();
 			th.start();
+			if (!Conf.MODE_CMDLINE.equals(AppServer.getConf().getMode())) {
+				EmbSvFrame.showGui(this, this.webAppList);
+			}
 		}
-		this.runBrowser();
+		this.runBrowser(applist);
 		if (started) {
 			// サーバが起動していた場合は何もしないで終了する。
 			System.exit(0);
@@ -360,7 +417,7 @@ public class AppServer {
 	/**
 	 * アプリケーションの停止。
 	 */
-	private void stop() {
+	public void stop() {
 		System.out.println("stop");
 		try {
 			this.tomcat.stop();

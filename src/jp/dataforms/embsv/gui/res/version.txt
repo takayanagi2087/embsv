@@ -1,0 +1,2 @@
+Embedded Server ${version} (C) 2024 Masahiko Takayanagi.
+Powerd by Apache tomcat & Apache derby.

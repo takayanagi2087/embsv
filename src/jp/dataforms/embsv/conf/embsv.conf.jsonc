@@ -3,7 +3,7 @@
 	//   cmdline:GUIを使用しません。
 	//   tasktray:タスクトレイモード。
 	//   window:ウインドウモード(タスクトレイが使用できない場合使用します。)
-	"mode": "tasktray"
+	"mode": "window"
 	// Tomcatのサービスポートを設定します。
 	, "port": 8080
 	// 停止コマンド用ポートを設定します。
