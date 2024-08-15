@@ -1,4 +1,4 @@
-# embsv.jar 簡易Webアプリケーションサーバ。
+# embsv.jar 実行可能warファイル作成ツール
 ## Description
 
 embsv.jarはまだ開発中です。
@@ -7,12 +7,11 @@ dataforms3.jarで作成したwarファイルを実行するには、Webサーバ
 Apache Tomcat10と何らかのデータベースサーバを用意する必要があります。
 この作業は専門知識が必要になるため、有用なwarファイルを公開しても
 専門家でないと利用することができません。
-そこでTomcat10 EmbeddedとJavaで作成されたデータベースであるApache Derby
-を組み合わせた簡易的なWebアプリケーションサーバembsv.jarを作成しました。
-embsv.jarを使うとwarファイル内に簡易Webアプリケーションサーバの機能を組み込むことが可能です。
-Java21以上がインストールされた環境であれば以下のコマンドでWebアプリケーションサーバが起動します。
+そこでTomcat10 EmbeddedとJavaで作成されたデータベースであるApache Derbyを組み合わせた
+Webアプリケーションの実行環境をwarファイルに組み込むツールを作成しました。
 
-java -jar <embsv.jarを組み込んだwarファイル>
+このツールで処理したwarファイルはJava21以上がインストールされた環境であれば
+Webアプリケーションサーバ環境を構築せずに実行することができます。
 
 ## Requirement
 
