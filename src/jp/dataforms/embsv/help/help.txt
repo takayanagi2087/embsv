@@ -1,3 +1,4 @@
+embsv.jar ${version}
 Usage:
 1) Runs the specified web application.
 java -jar embsv.jar -start <war file | Web application path>

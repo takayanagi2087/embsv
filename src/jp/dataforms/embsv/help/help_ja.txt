@@ -1,3 +1,4 @@
+embsv.jar ${version}
 使い方:
 1) 指定されたWebアプリケーションを実行します。
 java -jar embsv.jar -start <warファイル|Webアプリケーションパス>

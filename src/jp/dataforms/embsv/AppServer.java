@@ -24,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 
+import jp.dataforms.embsv.util.ContextXml;
 import jp.dataforms.embsv.util.FileUtil;
 import jp.dataforms.embsv.util.JarUtil;
 import lombok.Data;
@@ -207,6 +208,22 @@ public class AppServer {
 	}
 	
 	/**
+	 * META-INF/context.xmlのデータベースパスを設定します。
+	 * @param expath warの展開パス。
+	 * @throws Exception 例外。
+	 */
+	private void setDataSourcePath(final String expath) throws Exception {
+		logger.debug("setDataSourcePath expath:" + expath);
+		File exFile = new File(expath);
+		String apname = exFile.getName();
+		String dbpath = exFile.getParentFile().getParent() + File.separator + "javadb" + File.separator + apname;
+		logger.debug("setDataSourcePath dbpath:" + dbpath);
+		String contextXml = expath + File.separator + "META-INF" + File.separator + "context.xml";
+		ContextXml xml = new ContextXml(new File(contextXml));
+		xml.setDatabasePath(new File(dbpath));
+		xml.save();
+	}
+	/**
 	 * Webアプリケーションを開始します。
 	 * @throws Exception 例外。
 	 */
@@ -215,6 +232,7 @@ public class AppServer {
 		File appfile = new File(path);
 		if (Pattern.matches(".+\\.war$", path)) {
 			String expath = this.extractWar(path);
+			this.setDataSourcePath(expath);
 			appfile = new File(expath);
 		}
 		this.context = "/" + appfile.getName();
