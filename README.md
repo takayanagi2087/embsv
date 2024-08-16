@@ -10,7 +10,7 @@ dataforms3.jarで作成したwarファイルを実行するには、Apache Tomca
 このツールで処理したwarファイルは、Java21以上をがインストールされた環境であれば、Tomcatやデータベースサーバをインストールせずに実行することができます。
 
 ## Requirement
-* Java21
+* Java 21以上 
 * Tomcat10 + Apache Debyで動作するJava Web アプリケーション(*.warファイル)。
   META-INF/context.xmlに以下のようなorg.apache.derby.jdbc.EmbeddedDriverへの接続設定がされているもの。
   
