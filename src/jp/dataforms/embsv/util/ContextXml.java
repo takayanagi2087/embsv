@@ -37,7 +37,7 @@ public class ContextXml extends BaseXml {
 	 * @return データソースのノード。
 	 * @throws Exception 例外。
 	 */
-	private Node getDatasource() throws Exception {
+	public Node getDatasource() throws Exception {
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		Document doc = this.getDocument();
 		Node ret = (Node) xpath.evaluate("//Resource[@driverClassName='org.apache.derby.jdbc.EmbeddedDriver']", doc, XPathConstants.NODE);
@@ -54,8 +54,6 @@ public class ContextXml extends BaseXml {
 		if (ds != null) {
 			logger.debug("ds=" + ds.getNodeName());
 			ds.setAttribute("url", "jdbc:derby:" + dbpath + ";create=true");
-		} else {
-			logger.warn("The Apache derby data source is not configured. Add the data source configuration to " + this.getXmlFile().getAbsolutePath() + ".");
-		}
+		} 
 	}
 }

@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import org.apache.catalina.startup.Tomcat;
@@ -50,6 +51,12 @@ public class AppServer {
 	 */
 	private static Logger logger = LogManager.getLogger(AppServer.class);
 
+	
+	/**
+	 * リソース。
+	 */
+	private static ResourceBundle resource = ResourceBundle.getBundle("jp.dataforms.embsv.AppServer");
+
 	/**
 	 * 実行モード。
 	 */
@@ -59,6 +66,8 @@ public class AppServer {
 		STOP,
 		EMB,
 	}
+	
+	
 	
 	/**
 	 * 設定情報。
@@ -271,10 +280,14 @@ public class AppServer {
 		File contextXmlFile = new File(contextXml);
 		if (contextXmlFile.exists()) {
 			ContextXml xml = new ContextXml(new File(contextXml));
-			xml.setDatabasePath(new File(dbpath));
-			xml.save();
+			if (xml.getDatasource() != null) {
+				xml.setDatabasePath(new File(dbpath));
+				xml.save();
+			} else {
+				logger.warn(AppServer.resource.getString("message.datasourcenotfound"));
+			}
 		} else {
-			logger.warn(contextXml + " does not exists.Add the data source configuration to " + contextXml + ".");
+			logger.warn(contextXml + AppServer.resource.getString("message.contextxmlnotfound"));
 		}
 	}
 	
@@ -452,11 +465,12 @@ public class AppServer {
 				EmbSvFrame.showGui(this, this.webAppList);
 			}
 		}
-		logger.info("Please access the following URL in your browser.");
+		String msg = AppServer.resource.getString("message.browser");
 		for (File f: applist) {
 			String appurl = this.getAppURL(f);
-			logger.info(appurl);
+			msg += "\n\t" + appurl;
 		}
+		logger.info(msg);
 		if (AppServer.conf.isBrowser()) {
 			this.runBrowser(applist);
 		}
@@ -470,7 +484,6 @@ public class AppServer {
 	 * アプリケーションの停止。
 	 */
 	public void stop() {
-		System.out.println("stop");
 		try {
 			this.tomcat.stop();
 			Thread.sleep(3000);
@@ -516,12 +529,12 @@ public class AppServer {
 		String expath = this.extractWar(AppServer.inputWar, true);
 		logger.debug("expath=" + expath);
 		this.extactMyself(expath);
-		logger.info("creating " + AppServer.outputWar);
+		logger.info(AppServer.resource.getString("message.creating") + AppServer.outputWar);
 		FileUtil.createZipFile(AppServer.outputWar, expath);
-		logger.info("created " + AppServer.outputWar);
-		logger.info("cleanup " + expath);
-		logger.info("The following command will start the web application.");
-		logger.info("java -jar " + AppServer.outputWar);
+		logger.info(AppServer.resource.getString("message.created") + AppServer.outputWar);
+		logger.info(AppServer.resource.getString("message.cleanup") + expath);
+		logger.info(AppServer.resource.getString("message.startcmd") + "\n\tjava -jar " + AppServer.outputWar);
+//		logger.info("java -jar " + AppServer.outputWar);
 		FileUtils.cleanDirectory(new File(expath));
 		new File(expath).delete();
 	}
