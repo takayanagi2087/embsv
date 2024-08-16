@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.catalina.startup.Tomcat;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -267,9 +268,14 @@ public class AppServer {
 		String dbpath = exFile.getParentFile().getParent() + File.separator + "javadb" + File.separator + apname;
 		logger.debug("setDataSourcePath dbpath:" + dbpath);
 		String contextXml = expath + File.separator + "META-INF" + File.separator + "context.xml";
-		ContextXml xml = new ContextXml(new File(contextXml));
-		xml.setDatabasePath(new File(dbpath));
-		xml.save();
+		File contextXmlFile = new File(contextXml);
+		if (contextXmlFile.exists()) {
+			ContextXml xml = new ContextXml(new File(contextXml));
+			xml.setDatabasePath(new File(dbpath));
+			xml.save();
+		} else {
+			logger.warn(contextXml + " does not exists.Add the data source configuration to " + contextXml + ".");
+		}
 	}
 	
 	/**
@@ -383,6 +389,18 @@ public class AppServer {
 			this.runBrowser(f);
 		}
 	}
+	
+	/**
+	 * アプリケーションのURLを取得します。
+	 * @param f アプリケーションのパス。
+	 * @return アプリケーションのURL。
+	 */
+	private String getAppURL(final File f) {
+		int port = AppServer.conf.getPort();
+		String context = "/" + f.getName();
+		String ret = "http://localhost:" + port + context;
+		return ret;
+	}
 
 	/**
 	 * ブラウザを起動して、指定したアプリケーションを表示します。
@@ -390,18 +408,19 @@ public class AppServer {
 	 * @throws Exception 例外。
 	 */
 	public void runBrowser(File f) throws IOException, URISyntaxException {
-		int port = AppServer.conf.getPort();
+//		int port = AppServer.conf.getPort();
+//		String context = "/" + f.getName();
+		String appurl = this.getAppURL(f);
 		List<String> browser = (List<String>) AppServer.conf.getBrowserCommandLine();
-		String context = "/" + f.getName();
 		if (browser.size() == 0) {
-			Desktop.getDesktop().browse(new URI("http://localhost:" + port + context));
+			Desktop.getDesktop().browse(new URI(appurl));
 		} else {
 			String[] cmd = new String[browser.size() + 1];
 			int idx = 0;
 			for (String c: browser) {
 				cmd[idx++] = c;
 			}
-			cmd[idx] = "http://localhost:" + port + context;
+			cmd[idx] = appurl;
 			Runtime r = Runtime.getRuntime();
 			r.exec(cmd);
 		}
@@ -432,6 +451,11 @@ public class AppServer {
 			if (!Conf.MODE_CMDLINE.equals(AppServer.getConf().getMode())) {
 				EmbSvFrame.showGui(this, this.webAppList);
 			}
+		}
+		logger.info("Please access the following URL in your browser.");
+		for (File f: applist) {
+			String appurl = this.getAppURL(f);
+			logger.info(appurl);
 		}
 		if (AppServer.conf.isBrowser()) {
 			this.runBrowser(applist);
@@ -492,7 +516,14 @@ public class AppServer {
 		String expath = this.extractWar(AppServer.inputWar, true);
 		logger.debug("expath=" + expath);
 		this.extactMyself(expath);
+		logger.info("creating " + AppServer.outputWar);
 		FileUtil.createZipFile(AppServer.outputWar, expath);
+		logger.info("created " + AppServer.outputWar);
+		logger.info("cleanup " + expath);
+		logger.info("The following command will start the web application.");
+		logger.info("java -jar " + AppServer.outputWar);
+		FileUtils.cleanDirectory(new File(expath));
+		new File(expath).delete();
 	}
 	
 	/**

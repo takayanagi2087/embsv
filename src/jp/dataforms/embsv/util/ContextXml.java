@@ -51,7 +51,11 @@ public class ContextXml extends BaseXml {
 	 */
 	public void setDatabasePath(final File dbpath) throws Exception {
 		Element ds = (Element) this.getDatasource();
-		logger.debug("ds=" + ds.getNodeName());
-		ds.setAttribute("url", "jdbc:derby:" + dbpath + ";create=true");
+		if (ds != null) {
+			logger.debug("ds=" + ds.getNodeName());
+			ds.setAttribute("url", "jdbc:derby:" + dbpath + ";create=true");
+		} else {
+			logger.warn("The Apache derby data source is not configured. Add the data source configuration to " + this.getXmlFile().getAbsolutePath() + ".");
+		}
 	}
 }

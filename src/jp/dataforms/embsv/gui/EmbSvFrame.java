@@ -309,11 +309,6 @@ public class EmbSvFrame extends JFrame {
 			byte[] b = FileUtil.readInputStream(is);
 			String vinf = new String(b);
 			JOptionPane.showMessageDialog(null, vinf);
-/*			if (Conf.MODE_TASKTRAY.equals(AppServer.getConf().getMode())) {
-				this.icon.displayMessage(EmbSvFrame.resource.getString("menuitem.about"), vinf, MessageType.INFO);
-			} else {
-				JOptionPane.showMessageDialog(null, vinf);
-			}*/
 		} catch (Exception ex) {
 			logger.error(ex.getMessage(), ex);
 		}
