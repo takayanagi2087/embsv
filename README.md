@@ -12,9 +12,15 @@ dataforms3.jarで作成したwarファイルを実行するには、Apache Tomca
 ## Requirement
 * Java21
 * Tomcat10 + Apache Debyで動作するJava Web アプリケーション(*.warファイル)。
-
-## Licence
-[MIT](https://github.com/takayanagi2087/dataforms/blob/master/LICENSE)
+  META-INF/context.xmlに以下のようなorg.apache.derby.jdbc.EmbeddedDriverへの接続設定がされているもの。
+  
+```
+	<Resource auth="Container"
+		driverClassName="org.apache.derby.jdbc.EmbeddedDriver"
+		name="jdbc/sample" type="javax.sql.DataSource"
+		url="jdbc:derby:C:/eclipse/pleiades/workspace/sample/javadb;create=true"
+		username="" password="" />
+```
 
 ## Usage
 
@@ -29,7 +35,7 @@ dataforms3.jarで作成したwarファイルを実行するには、Apache Tomca
 2024/08/16  12:13        59,747,686 sample-0.0.1-SNAPSHOT.war
 ```
 
-sample-0.0.1-SNAPSHOT.warにアプリケーションサーバを組み込んだsample.warを作成。
+sample-0.0.1-SNAPSHOT.warにアプリケーションサーバを組み込んだsample.warを作成します。
 
 ```
 C:\embsv>java -jar embsv.jar -emb sample-0.0.1-SNAPSHOT.war sample.war
@@ -58,7 +64,7 @@ C:\embsv>dir
                3 Dir(s)  2,438,803,484,672 bytes free
 ```
 
-sample.warを実行。
+sample.warを実行します。
 
 ```
 C:\embsv>java -jar sample.war
@@ -73,18 +79,19 @@ C:\embsv>java -jar sample.war
         http://localhost:8080/sample
 ```
 
-この状態でブラウザから/localhost:8080/sampleをアクセスすると、データベースの初期化画面が表示される。
+この状態でブラウザから/localhost:8080/sampleをアクセスすると、データベースの初期化画面が表示されます。
 
 ![webapp](webapp.png)
 
 
-WindowsやMacOS等では以下の用に起動することをお勧めします。
+WindowsやMacOS等では以下のオプション指定をお勧めします。
 
 ```
 java -jar sample.war -browser -mode tasktray 
 ```
 
 このようにオプションを指定すると、Webアプリケーションサーバ起動時に自動的にデフォルトブラウザが起動し、直ぐにWebアプリケーションを利用することができます。
+
 また、タスクトレイに以下のアイコンが表示され、タスクトレイのメニューからブラウザの起動やサーバの停止が可能になります。
 
 ![アイコン](src/embsv.png)
@@ -161,3 +168,7 @@ embsv.conf.jsoncの内容。
 	//]
 }
 ```
+
+## Licence
+[MIT](https://github.com/takayanagi2087/dataforms/blob/master/LICENSE)
+
