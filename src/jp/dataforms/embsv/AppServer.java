@@ -12,7 +12,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -420,22 +419,24 @@ public class AppServer {
 	 * @param f アプリケーションファイル。
 	 * @throws Exception 例外。
 	 */
-	public void runBrowser(File f) throws IOException, URISyntaxException {
-//		int port = AppServer.conf.getPort();
-//		String context = "/" + f.getName();
-		String appurl = this.getAppURL(f);
-		List<String> browser = (List<String>) AppServer.conf.getBrowserCommandLine();
-		if (browser.size() == 0) {
-			Desktop.getDesktop().browse(new URI(appurl));
-		} else {
-			String[] cmd = new String[browser.size() + 1];
-			int idx = 0;
-			for (String c: browser) {
-				cmd[idx++] = c;
+	public void runBrowser(File f) {
+		try {
+			String appurl = this.getAppURL(f);
+			List<String> browser = (List<String>) AppServer.conf.getBrowserCommandLine();
+			if (browser.size() == 0) {
+				Desktop.getDesktop().browse(new URI(appurl));
+			} else {
+				String[] cmd = new String[browser.size() + 1];
+				int idx = 0;
+				for (String c: browser) {
+					cmd[idx++] = c;
+				}
+				cmd[idx] = appurl;
+				Runtime r = Runtime.getRuntime();
+				r.exec(cmd);
 			}
-			cmd[idx] = appurl;
-			Runtime r = Runtime.getRuntime();
-			r.exec(cmd);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 		}
 	}
 	

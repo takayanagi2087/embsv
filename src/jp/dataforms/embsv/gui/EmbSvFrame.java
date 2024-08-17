@@ -97,7 +97,7 @@ public class EmbSvFrame extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -110,7 +110,7 @@ public class EmbSvFrame extends JFrame {
 			}
 		});
 	}
-
+*/
 	/**
 	 * GUIを表示します。
 	 * @param server 
@@ -120,14 +120,14 @@ public class EmbSvFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EmbSvFrame frame = new EmbSvFrame();
+					EmbSvFrame frame = new EmbSvFrame(webAppList);
 					if (Conf.MODE_TASKTRAY.equals(AppServer.getConf().getMode())) {
 						frame.setTaskTrayIcon();
 					} else if (Conf.MODE_WINDOW.equals(AppServer.getConf().getMode())) {
 						frame.setVisible(true);
 						frame.setExtendedState(ICONIFIED);
 					}
-					frame.setWebAppList(webAppList);
+//					frame.setWebAppList();
 					frame.appServer = server;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -139,9 +139,11 @@ public class EmbSvFrame extends JFrame {
 	
 	/**
 	 * Create the frame.
+	 * @param webAppList Webアプリケーションリスト。
 	 */
-	public EmbSvFrame() throws Exception {
+	public EmbSvFrame(final List<File> webAppList) throws Exception {
 		setTitle(SYSTEM_NAME);
+		this.webAppList = webAppList;
 		this.iconImage = ImageIO.read(Thread.currentThread().getContextClassLoader().getResourceAsStream("embsv.png"));
 		this.setIconImage(this.iconImage);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -202,7 +204,7 @@ public class EmbSvFrame extends JFrame {
 			});
 			buttonPanel.add(closeButton);
 		}
-
+		this.setWebAppList();
 	}
 	
 	/**
@@ -252,15 +254,17 @@ public class EmbSvFrame extends JFrame {
 		});
 		// ポップアップメニュー
 		PopupMenu menu = new PopupMenu();
-		// メニューの例
-		MenuItem appList = new MenuItem(EmbSvFrame.resource.getString("menuitem.applist"));
-		appList.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				EmbSvFrame.this.setVisible(true);
-			}
-		});
-
+		for (File f: this.webAppList) {
+			String contextPath = "/" + f.getName();
+			MenuItem showMenu = new MenuItem(EmbSvFrame.resource.getString("menuitem.show") + " (" + contextPath + ")");
+			showMenu.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					EmbSvFrame.this.appServer.runBrowser(f);
+				}
+			});
+			menu.add(showMenu);
+		}
 		MenuItem about = new MenuItem(EmbSvFrame.resource.getString("menuitem.about"));
 		about.addActionListener(new ActionListener() {
 			@Override
@@ -279,7 +283,6 @@ public class EmbSvFrame extends JFrame {
 			}
 		});
 		// メニューにメニューアイテムを追加
-		menu.add(appList);
 		menu.add(about);
 		menu.add(exitItem);
 		icon.setPopupMenu(menu);
@@ -292,8 +295,7 @@ public class EmbSvFrame extends JFrame {
 	 * Webアプリケーションのリストを設定します。
 	 * @param webAppList Webアプリケーションリスト。
 	 */
-	public void setWebAppList(final List<File> webAppList) {
-		this.webAppList = webAppList;
+	private void setWebAppList() {
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		for (File f: webAppList) {
 			model.addElement("/" + f.getName());
