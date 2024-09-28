@@ -47,7 +47,6 @@ public class JarUtil {
 	 * jarファイルを展開します。
 	 * @param jarfile jarファイル。
 	 * @param dstfile 展開先。
-	 * @param clean 既に存在するファイルを削除する。
 	 */
 	public static void extractJar(final File jarfile, final File dstfile) throws Exception {
 		JarUtil.extractJar(jarfile, dstfile, true);
@@ -92,9 +91,9 @@ public class JarUtil {
 			}
 		}
 	}
-	
-	public static void createJar(final File path, final File jarfile) throws Exception {
+
+	/*public static void createJar(final File path, final File jarfile) throws Exception {
 		try (JarFile jar = new JarFile(jarfile)) {
 		}
-	}
+	}*/
 }

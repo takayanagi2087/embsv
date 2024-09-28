@@ -293,7 +293,6 @@ public class EmbSvFrame extends JFrame {
 	
 	/**
 	 * Webアプリケーションのリストを設定します。
-	 * @param webAppList Webアプリケーションリスト。
 	 */
 	private void setWebAppList() {
 		DefaultListModel<String> model = new DefaultListModel<String>();

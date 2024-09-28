@@ -60,9 +60,21 @@ public class AppServer {
 	 * 実行モード。
 	 */
 	private enum Mode {
+		/**
+		 * ヘルプ。
+		 */
 		HELP,
+		/**
+		 * 開始。
+		 */
 		START,
+		/**
+		 * 終了。
+		 */
 		STOP,
+		/**
+		 * App Serverの追加。
+		 */
 		EMB,
 	}
 	
@@ -308,6 +320,7 @@ public class AppServer {
 	
 	/**
 	 * Webアプリケーションを開始します。
+	 * @param path Webアプリケーションのパス。
 	 * @throws Exception 例外。
 	 */
 	private void start(final String path) throws Exception {
@@ -509,6 +522,7 @@ public class AppServer {
 
 	/**
 	 * AppServerが含まれているjarファイルを展開します。
+	 * @param expath 出力先。
 	 * @throws Exception 例外。
 	 */
 	private void extactMyself(final String expath) throws Exception {
