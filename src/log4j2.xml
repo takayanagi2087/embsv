@@ -3,8 +3,9 @@
 <Configuration status="off">
 	<Properties>
 		<Property name="format1">%d{yyyy/MM/dd HH:mm:ss.SSS} [%t] %-6p %c{10} %m%n</Property>
-		<Property name="logfile">log/embsv.log</Property>
-		<Property name="logfile-archive">log/embsv_%d{yyyy-MM-dd}-%i.log</Property>
+		<Property name="application">embsv</Property>
+		<Property name="logfile">./logs/${application}.log</Property>
+		<Property name="logfile-archive">./logs/${application}_%d{yyyy-MM-dd}-%i.log.gz</Property>
 	</Properties>
 
 	<Appenders>
@@ -20,9 +21,18 @@
 				<pattern>${format1}</pattern>
 			</PatternLayout>
 			<Policies>
-				<SizeBasedTriggeringPolicy size="1MB"/>
+				<!-- 1日ごとに新しいファイルを作成 -->
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
 			</Policies>
-			<DefaultRolloverStrategy max="3"/>
+			<!-- 10日分残す設定 -->
+			<DefaultRolloverStrategy>
+				<Delete basePath="${sys:catalina.base}/logs" maxDepth="1">
+					<!-- ファイル名が アプリケーション名で始まるものを対象にする -->
+					<IfFileName glob="${application}_*.log.gz" />
+					<!-- 最終更新から10日（10d）経ったものを削除 -->
+					<IfLastModified age="10d" />
+				</Delete>
+			</DefaultRolloverStrategy>
 		</RollingFile>
 	</Appenders>
 

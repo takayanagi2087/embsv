@@ -6,9 +6,8 @@
 	<artifactId>embsv</artifactId>
 	<version>1.0.1</version>
 	<properties>
-		<tomcat.version>10.1.28</tomcat.version>
-		<derby.version>10.17.1.0</derby.version>
-		<log4j.version>2.23.1</log4j.version>
+		<tomcat.version>10.1.56</tomcat.version>
+		<log4j.version>2.25.2</log4j.version>
 	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -66,115 +65,6 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derby -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>${derby.version}</version>
-			<!-- 
-			<scope>test</scope>
-			-->
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyshared -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyshared</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbytools -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbytools</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyoptionaltools -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyoptionaltools</artifactId>
-			<version>${derby.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_ja_JP -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_ja_JP</artifactId>
-			<version>${derby.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_zh_TW -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_zh_TW</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_fr -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_fr</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_zh_CN -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_zh_CN</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_cs -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_cs</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_es -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_es</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_it -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_it</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_pl -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_pl</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_ko_KR -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_ko_KR</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_pt_BR -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_pt_BR</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!--
-		https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_de_DE -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_de_DE</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.derby/derbyLocale_ru -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyLocale_ru</artifactId>
-			<version>${derby.version}</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
