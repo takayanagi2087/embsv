@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>jp.dataforms</groupId>
 	<artifactId>embsv</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<properties>
 		<tomcat.version>10.1.56</tomcat.version>
 		<log4j.version>2.25.2</log4j.version>
