@@ -33,14 +33,14 @@ import lombok.Data;
 import lombok.Getter;
 
 /**
- * 組み込みTomcatアプリケーションサーバー。
+ * 組み込みTomcatアプリケーションサーバー.
  * <pre>
  * Webアプリケーションの実行。
- * java -jar envsv.jar -start <warファイル|アプリケーションパス>
+ * java -jar embsv.jar -start warファイル | アプリケーションパス
  * Webアプリケーションの停止。
- * java -jar envsv.jar -stop 
+ * java -jar embsv.jar -stop 
  * warファイルにTomcatを組み込む。
- * java -jar envsv.jar -emb <入力warファイル> <出力warファイル>
+ * java -jar embsv.jar -emb 入力warファイル 出力warファイル
  * </pre>
  * 
  */
