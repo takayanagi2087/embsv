@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>jp.dataforms</groupId>
 	<artifactId>embsv</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<properties>
-		<tomcat.version>10.1.56</tomcat.version>
-		<log4j.version>2.25.2</log4j.version>
+		<tomcat.version>10.1.61</tomcat.version>
+		<log4j.version>2.26.1</log4j.version>
 	</properties>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
